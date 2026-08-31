@@ -49,6 +49,22 @@ export interface Day {
 }
 
 export const STORAGE_KEY = 'gymday:v1'
+
+/**
+ * Slots that keep their role no matter what: rename or swap equipment, but
+ * the slot can never be cut when late and never loses its place.
+ */
+export const PROTECTED_LIFT_IDS: ReadonlySet<string> = new Set([
+  'squat',
+  'bench',
+  'row',
+  'pull-up',
+])
+
+export const SETS_MIN = 1
+export const SETS_MAX = 5
+export const REPS_MIN = 1
+export const REPS_MAX = 50
 export const TIMEZONE = 'America/Los_Angeles'
 export const DEFAULT_RIR = 'RIR 1-2'
 

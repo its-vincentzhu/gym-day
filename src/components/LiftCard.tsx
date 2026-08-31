@@ -9,7 +9,9 @@ export function LiftCard(props: {
   dateKey: DateKey
   sets: number
   isCatchUp: boolean
+  isCustomized: boolean
   onUpdateSet: (setIdx: number, patch: Partial<SetEntry>) => void
+  onEdit: () => void
 }) {
   const { lift, state, dateKey, sets } = props
   const entries = state.sessions[dateKey]?.[lift.id] ?? []
@@ -38,8 +40,16 @@ export function LiftCard(props: {
   return (
     <div className={`card lift-card${props.isCatchUp ? ' catch-up' : ''}`}>
       <div className="lift-head">
-        <h3>{lift.name}</h3>
+        <h3>
+          <button className="slot-name" onClick={props.onEdit} aria-label={`Edit ${lift.name}`}>
+            {lift.name}
+            <span className="edit-glyph" aria-hidden="true">
+              ✎
+            </span>
+          </button>
+        </h3>
         <div className="chips">
+          {props.isCustomized && <span className="chip chip-custom">custom</span>}
           {props.isCatchUp && <span className="chip chip-catchup">catch-up</span>}
           <span className="chip">
             {sets}×{lift.repsMin}–{lift.repsMax}

@@ -46,3 +46,14 @@ export const prettyDate = (key: DateKey): string => {
   const [y, m, d] = key.split('-').map(Number)
   return prettyFormat.format(new Date(Date.UTC(y, m - 1, d)))
 }
+
+const shortFormat = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'UTC',
+  month: 'short',
+  day: 'numeric',
+})
+
+export const shortDate = (key: DateKey): string => {
+  const [y, m, d] = key.split('-').map(Number)
+  return shortFormat.format(new Date(Date.UTC(y, m - 1, d)))
+}
