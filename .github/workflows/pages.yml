@@ -44,3 +44,23 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify live URL returns 200 and the app HTML
+        run: |
+          url="https://its-vincentzhu.github.io/gym-day/"
+          for i in $(seq 1 10); do
+            code=$(curl -s -o /tmp/page.html -w '%{http_code}' "$url") || code=000
+            if [ "$code" = "200" ] && grep -q "<title>Gym Day</title>" /tmp/page.html; then
+              echo "OK: $url returned 200 with Gym Day HTML"
+              exit 0
+            fi
+            echo "attempt $i: status=$code, retrying..."
+            sleep 15
+          done
+          echo "FAILED: $url did not serve the app"
+          cat /tmp/page.html || true
+          exit 1
